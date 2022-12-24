@@ -42,6 +42,12 @@ const bricksAmbientTextures = textureLoader.load('textures/bricks/ambient.jpg')
 const bricksRoughnessTextures = textureLoader.load('textures/bricks/roughness.jpg')
 const bricksColorTextures = textureLoader.load('textures/bricks/albedo.jpg')
 
+const grassColorTextures = textureLoader.load('textures/grass/color.jpg')
+const grassAmbientTextures = textureLoader.load('textures/grass/ambientOcclusion.jpg')
+const grassNormalTextures = textureLoader.load('textures/grass/normal.jpg')
+const grassRoughnessTextures = textureLoader.load('textures/grass/roughness.jpg')
+
+
 /**
  * House
  */
@@ -180,8 +186,14 @@ for(let i = 0 ; i < 20; i++){
 // Floor
 const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(20, 20),
-    new THREE.MeshStandardMaterial({ color: '#a9c388' })
+    new THREE.MeshStandardMaterial({
+        map:grassColorTextures,
+        aoMap: grassAmbientTextures,
+        normalMap: grassNormalTextures,
+        roughnessMap: grassRoughnessTextures
+    })
 )
+floor.geometry.setAttribute('uv2' , new THREE.Float32BufferAttribute(floor.geometry.attributes.uv.array , 2))
 floor.rotation.x = - Math.PI * 0.5
 floor.position.y = 0
 scene.add(floor)
