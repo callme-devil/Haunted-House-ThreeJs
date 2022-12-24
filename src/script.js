@@ -38,7 +38,7 @@ const roughnessTexture = textureLoader.load('textures/door/roughness.jpg')
 
 const bricksNormalTextures = textureLoader.load('textures/bricks/normal.jpg')
 const bricksAmbientTextures = textureLoader.load('textures/bricks/ambient.jpg')
-const bricksHeighTextures = textureLoader.load('textures/bricks/height.jpg')
+// const bricksHeighTextures = textureLoader.load('textures/bricks/height.jpg')
 const bricksRoughnessTextures = textureLoader.load('textures/bricks/roughness.jpg')
 const bricksColorTextures = textureLoader.load('textures/bricks/albedo.jpg')
 
@@ -59,7 +59,8 @@ const walls = new THREE.Mesh(
         aoMap: bricksAmbientTextures,
         transparent: true,
         normalMap:bricksNormalTextures,
-        roughnessMap: roughnessTexture
+        roughnessMap: bricksRoughnessTextures,
+        // displacementMap: bricksHeighTextures,        
     })
 )
 walls.geometry.setAttribute('uv2' , new THREE.Float32BufferAttribute(walls.geometry.attributes.uv.array , 2))
