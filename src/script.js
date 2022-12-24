@@ -116,7 +116,7 @@ for(let i = 0 ; i < 30; i++){
         const x = Math.sin(angle) * radius
         const z = Math.cos(angle) * radius + 0.02
 
-        gltf.scene.position.set(x , 0.4 , z)
+        gltf.scene.position.set(x , 0 , z)
         gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
 
         graves.add(gltf.scene)
@@ -134,7 +134,7 @@ for(let i = 0 ; i < 20; i++){
         const x = Math.sin(angle) * radius
         const z = Math.cos(angle) * radius + 0.02
 
-        gltf.scene.position.set(x , 0.4 , z)
+        gltf.scene.position.set(x , 0 , z)
         gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
 
         graves.add(gltf.scene)
