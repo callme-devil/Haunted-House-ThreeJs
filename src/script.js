@@ -2,6 +2,10 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import GUI from 'lil-gui'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+
+
+const gltfLoader = new GLTFLoader()
 
 /**
  * Base
@@ -97,29 +101,47 @@ house.add(bush1 , bush2 , bush3 , bush4)
 /**
  * Graves
  */
+
 const graves = new THREE.Group()
 scene.add(graves)
 
-const graveGeometry = new THREE.BoxGeometry(0.6 , 0.8 , 0.2)
-const grave2Geometry = new THREE.BoxGeometry(0.6 , 0.8 , 0.2)
-const graveMaterial = new THREE.MeshStandardMaterial({
-    color: "#b2b6b1"
-})
+for(let i = 0 ; i < 30; i++){
+    gltfLoader.load('models/Graves/grave2.glb',
+    (gltf)=>{
+        const angle = Math.random() * Math.PI * 7
+        const radius = 4 + Math.random() * 5.3
+        gltf.scene.position.x = 5
+        gltf.scene.scale.set(0.02,0.02,0.02)
 
-for(let i = 0; i < 65; i++){
-    const angle = Math.random() * Math.PI * 7
-    const radius = 4 + Math.random() * 5.6
+        const x = Math.sin(angle) * radius
+        const z = Math.cos(angle) * radius + 0.02
 
-    const x = Math.sin(angle) * radius
-    const z = Math.cos(angle) * radius + 0.02
+        gltf.scene.position.set(x , 0.4 , z)
+        gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
 
-    const grave = new THREE.Mesh(graveGeometry , graveMaterial)
+        graves.add(gltf.scene)
 
-    grave.position.set(x , 0.4 , z)
-    grave.rotation.y = (Math.random() - 0.5) * 0.4
-
-    graves.add(grave)
+    })
 }
+//? Grave 2
+for(let i = 0 ; i < 20; i++){
+    gltfLoader.load('models/Graves/grave.glb',
+    (gltf)=>{
+        const angle = Math.random() * Math.PI * 7
+        const radius = 4 + Math.random() * 3.6
+        gltf.scene.position.x = 5
+        gltf.scene.scale.set(0.02,0.02,0.02)
+        const x = Math.sin(angle) * radius
+        const z = Math.cos(angle) * radius + 0.02
+
+        gltf.scene.position.set(x , 0.4 , z)
+        gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
+
+        graves.add(gltf.scene)
+
+    })
+}
+
 
 
 // Floor
