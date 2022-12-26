@@ -47,6 +47,15 @@ const grassAmbientTextures = textureLoader.load('textures/grass/ambientOcclusion
 const grassNormalTextures = textureLoader.load('textures/grass/normal.jpg')
 const grassRoughnessTextures = textureLoader.load('textures/grass/roughness.jpg')
 
+
+const windowColorTextures = textureLoader.load('textures/window/basecolor.jpg')
+const windowAmbientTextures = textureLoader.load('textures/window/ambientOcclusion.jpg')
+const windowNormalTextures = textureLoader.load('textures/window/normal.jpg')
+const windowRoughnessTextures = textureLoader.load('textures/window/roughness.jpg')
+const windowHeightTextures = textureLoader.load('textures/window/height.png')
+const windowMetallicTextures = textureLoader.load('textures/window/metallic.jpg')
+const windowAlphaTextures = textureLoader.load('textures/window/alpha.png')
+
 grassColorTextures.repeat.set(8 , 8)
 grassAmbientTextures.repeat.set(8 , 8)
 grassNormalTextures.repeat.set(8 , 8)
@@ -124,6 +133,29 @@ door.position.z = 1.99
 door.position.y = 1
 
 house.add(door)
+
+// Windows
+const window1 = new THREE.Mesh(
+    new THREE.PlaneGeometry(1.5 , 1.5 , 100 , 100),
+    new THREE.MeshStandardMaterial({
+        map: windowColorTextures,
+        transparent : true,
+        alphaMap: windowAlphaTextures,
+        aoMap: windowAmbientTextures,
+        displacementMap: windowHeightTextures,
+        displacementScale: 0.1,
+        normalMap: windowNormalTextures,
+        metalnessMap: windowMetallicTextures,
+        roughnessMap: windowRoughnessTextures
+    })
+)
+
+window1.geometry.setAttribute('uv2' , new THREE.Float32BufferAttribute(window1.geometry.attributes.uv.array , 2))
+window1.rotation.y = 1.5708
+window1.position.y = 1.5
+window1.position.x = 2.02
+
+house.add(window1)
 
 /**
  * Bushes
