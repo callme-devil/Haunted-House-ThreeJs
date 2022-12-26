@@ -30,14 +30,14 @@ const textureLoader = new THREE.TextureLoader()
 
 const doorColorTexture = textureLoader.load('textures/door/color.jpg')
 const alphaColorTexture = textureLoader.load('textures/door/alpha.jpg')
-const ambientTexture = textureLoader.load('textures/door/ambientOcculusion.jpg')
+const ambientTexture = textureLoader.load('textures/door/ambientOcclusion.jpg')
 const heightTexture = textureLoader.load('textures/door/height.jpg')
 const metalnessTexture = textureLoader.load('textures/door/metalness.jpg')
 const normalTexture = textureLoader.load('textures/door/normal.jpg')
 const roughnessTexture = textureLoader.load('textures/door/roughness.jpg')
 
 const bricksNormalTextures = textureLoader.load('textures/bricks/normal.jpg')
-const bricksAmbientTextures = textureLoader.load('textures/bricks/ambient.jpg')
+const bricksAmbientTextures = textureLoader.load('textures/bricks/ao.jpg')
 // const bricksHeighTextures = textureLoader.load('textures/bricks/height.jpg')
 const bricksRoughnessTextures = textureLoader.load('textures/bricks/roughness.jpg')
 const bricksColorTextures = textureLoader.load('textures/bricks/albedo.jpg')
@@ -172,6 +172,14 @@ for(let i = 0 ; i < 30; i++){
         gltf.scene.position.set(x , 0 , z)
         gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
 
+        gltf.scene.castShadow = true
+       
+        gltf.scene.traverse(function (node) {
+            if(node.isMesh){
+                node.castShadow = true
+            }
+        })
+
         graves.add(gltf.scene)
 
     })
@@ -189,6 +197,12 @@ for(let i = 0 ; i < 20; i++){
 
         gltf.scene.position.set(x , 0 , z)
         gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
+
+        gltf.scene.traverse(function (node) {
+            if(node.isMesh){
+                node.castShadow = true
+            }
+        })
 
         graves.add(gltf.scene)
 
@@ -314,6 +328,7 @@ bush2.castShadow = true
 bush3.castShadow = true
 bush4.castShadow = true
 
+floor.receiveShadow = true
 /**
  * Animate
  */
