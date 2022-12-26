@@ -308,7 +308,11 @@ ghost1.castShadow = true
 ghost2.castShadow = true
 ghost3.castShadow = true
 
-
+walls.castShadow = true
+bush1.castShadow = true
+bush2.castShadow = true
+bush3.castShadow = true
+bush4.castShadow = true
 
 /**
  * Animate
