@@ -384,33 +384,57 @@ ghost3.shadow.camera.far = 7
  * Animate
  */
 
-gltfLoader.load('models/Ghost/untitled.glb',
-(gltf)=>{
+// gltfLoader.load('models/Ghost/untitled.glb',
+// (gltf)=>{
     
-        const angle = 3 * 0.5
-        gltf.scene.position.x = Math.cos(angle) * 4
-        gltf.scene.position.z = Math.sin(angle) * 4
-        gltf.scene.position.y = Math.sin(elapsedTimeFGhost * 3)
+//         const angle = 3 * 0.5
+//         gltf.scene.position.x = Math.cos(angle) * 4
+//         gltf.scene.position.z = Math.sin(angle) * 4
+//         gltf.scene.position.y = Math.sin(elapsedTimeFGhost * 3)
     
-        gltf.scene.scale.set(0.4,0.4,0.4)
-        gltf.scene.rotation.x = 1.3
-        gltf.scene.rotation.y = - 0.01
+//         gltf.scene.scale.set(0.4,0.4,0.4)
+//         gltf.scene.rotation.x = 1.3
+//         gltf.scene.rotation.y = - 0.01
     
-        gltf.scene.castShadow = true
+//         gltf.scene.castShadow = true
     
-        gltf.scene.traverse(function (node) {
-            if(node.isMesh){
-                node.castShadow = true
-            }
-        })
+//         gltf.scene.traverse(function (node) {
+//             if(node.isMesh){
+//                 node.castShadow = true
+//             }
+//         })
     
-        scene.add(gltf.scene)
+//         scene.add(gltf.scene)
 
-        renderer.render(scene, camera)
+//         renderer.render(scene, camera)
 
-        window.requestAnimationFrame(gltf)
+//         window.requestAnimationFrame(gltf)
 
-})
+// })
+
+gltfLoader.load('models/Ghost/untitled.glb', process)
+
+let model = new THREE.Object3D()
+
+function process(gltf) {
+
+    gltf.scene.scale.set(0.4,0.4,0.4)
+
+    gltf.scene.rotation.x = 1.3
+    gltf.scene.rotation.y = - 0.01
+
+    gltf.scene.castShadow = true
+    
+    gltf.scene.traverse(function (node) {
+        if(node.isMesh){
+            node.castShadow = true
+        }
+    })
+
+    model.add(gltf.scene)
+
+    scene.add(model)
+}
 
 
 const clock = new THREE.Clock()
@@ -437,6 +461,12 @@ const tick = () =>
     ghost3.position.z = Math.sin(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.5))
     ghost3.position.y = Math.sin(elapsedTime * 4)  + Math.sin(elapsedTime * 2.5)
 
+    const angle = elapsedTime * 0.5
+    model.position.x = Math.cos(angle) * 4
+    model.position.z = Math.sin(angle) * 4
+    model.position.y = Math.sin(elapsedTime * 3)
+    
+
     // Update controls
     controls.update()
 
@@ -448,3 +478,41 @@ const tick = () =>
 }
 
 tick()
+
+// gltfLoader.load('models/Ghost/untitled.glb', process)
+
+// let model = new THREE.Object3D()
+
+
+// animateGhost()
+
+// function animateGhost() {
+
+//     requestAnimationFrame(animateGhost)
+
+//     // const angle = elapsedTimeFGhost * 0.5
+//     // model.position.x = Math.cos(angle) * 4
+//     // model.position.z = Math.sin(angle) * 4
+//     // model.position.y = Math.sin(elapsedTimeFGhost * 3)
+    
+//     model.scale.set(0.4,0.4,0.4)
+//     model.rotation.x = 1.3
+//     model.rotation.y = - 0.01
+    
+//     renderer.render(scene , camera)
+// }
+
+// function process(gltf) {
+
+//     gltf.scene.castShadow = true
+    
+//     gltf.scene.traverse(function (node) {
+//         if(node.isMesh){
+//             node.castShadow = true
+//         }
+//     })
+
+//     model.add(gltf.scene)
+
+//     scene.add(model)
+// }
