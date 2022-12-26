@@ -285,6 +285,7 @@ house.add(doorLight)
 /**
  * Ghost
  */
+
 const ghost1 = new THREE.PointLight('#ff00ff' , 2 , 3)
 scene.add(ghost1)
 
@@ -382,7 +383,39 @@ ghost3.shadow.camera.far = 7
 /**
  * Animate
  */
+
+gltfLoader.load('models/Ghost/untitled.glb',
+(gltf)=>{
+    
+        const angle = 3 * 0.5
+        gltf.scene.position.x = Math.cos(angle) * 4
+        gltf.scene.position.z = Math.sin(angle) * 4
+        gltf.scene.position.y = Math.sin(elapsedTimeFGhost * 3)
+    
+        gltf.scene.scale.set(0.4,0.4,0.4)
+        gltf.scene.rotation.x = 1.3
+        gltf.scene.rotation.y = - 0.01
+    
+        gltf.scene.castShadow = true
+    
+        gltf.scene.traverse(function (node) {
+            if(node.isMesh){
+                node.castShadow = true
+            }
+        })
+    
+        scene.add(gltf.scene)
+
+        renderer.render(scene, camera)
+
+        window.requestAnimationFrame(gltf)
+
+})
+
+
 const clock = new THREE.Clock()
+
+const elapsedTimeFGhost = clock.getElapsedTime()
 
 const tick = () =>
 {
