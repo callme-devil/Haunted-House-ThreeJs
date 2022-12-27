@@ -1,4 +1,5 @@
-# Three.js Journey
+# Haunted House
+![Haunted-House](static/image/Demo_House.png)
 
 ## Setup
 Download [Node.js](https://nodejs.org/en/download/).
