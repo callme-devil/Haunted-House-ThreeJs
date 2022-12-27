@@ -162,7 +162,7 @@ house.add(window1)
  */
 const bushGeometry = new THREE.SphereGeometry(1 , 16 , 16)
 const bushMaterial = new THREE.MeshStandardMaterial({
-    color: '#89c854'
+    map:grassColorTextures
 })
 
 const bush1 = new THREE.Mesh(bushGeometry , bushMaterial)
@@ -190,56 +190,56 @@ house.add(bush1 , bush2 , bush3 , bush4)
 const graves = new THREE.Group()
 scene.add(graves)
 
-// for(let i = 0 ; i < 30; i++){
-//     gltfLoader.load('models/Graves/grave2.glb',
-//     (gltf)=>{
-//         const angle = Math.random() * Math.PI * 7
-//         const radius = 4 + Math.random() * 5.3
-//         gltf.scene.position.x = 5
-//         gltf.scene.scale.set(0.02,0.02,0.02)
+for(let i = 0 ; i < 30; i++){
+    gltfLoader.load('models/Graves/grave2.glb',
+    (gltf)=>{
+        const angle = Math.random() * Math.PI * 7
+        const radius = 4 + Math.random() * 5.3
+        gltf.scene.position.x = 5
+        gltf.scene.scale.set(0.02,0.02,0.02)
 
-//         const x = Math.sin(angle) * radius
-//         const z = Math.cos(angle) * radius + 0.02
+        const x = Math.sin(angle) * radius
+        const z = Math.cos(angle) * radius + 0.02
 
-//         gltf.scene.position.set(x , 0 , z)
-//         gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
+        gltf.scene.position.set(x , 0 , z)
+        gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
 
-//         gltf.scene.castShadow = true
+        gltf.scene.castShadow = true
        
-//         gltf.scene.traverse(function (node) {
-//             if(node.isMesh){
-//                 node.castShadow = true
-//             }
-//         })
+        gltf.scene.traverse(function (node) {
+            if(node.isMesh){
+                node.castShadow = true
+            }
+        })
 
-//         graves.add(gltf.scene)
+        graves.add(gltf.scene)
 
-//     })
-// }
+    })
+}
 //? Grave 2
-// for(let i = 0 ; i < 20; i++){
-//     gltfLoader.load('models/Graves/grave.glb',
-//     (gltf)=>{
-//         const angle = Math.random() * Math.PI * 7
-//         const radius = 4 + Math.random() * 3.6
-//         gltf.scene.position.x = 5
-//         gltf.scene.scale.set(0.02,0.02,0.02)
-//         const x = Math.sin(angle) * radius
-//         const z = Math.cos(angle) * radius + 0.02
+for(let i = 0 ; i < 20; i++){
+    gltfLoader.load('models/Graves/grave.glb',
+    (gltf)=>{
+        const angle = Math.random() * Math.PI * 7
+        const radius = 4 + Math.random() * 3.6
+        gltf.scene.position.x = 5
+        gltf.scene.scale.set(0.02,0.02,0.02)
+        const x = Math.sin(angle) * radius
+        const z = Math.cos(angle) * radius + 0.02
 
-//         gltf.scene.position.set(x , 0 , z)
-//         gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
+        gltf.scene.position.set(x , 0 , z)
+        gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
 
-//         gltf.scene.traverse(function (node) {
-//             if(node.isMesh){
-//                 node.castShadow = true
-//             }
-//         })
+        gltf.scene.traverse(function (node) {
+            if(node.isMesh){
+                node.castShadow = true
+            }
+        })
 
-//         graves.add(gltf.scene)
+        graves.add(gltf.scene)
 
-//     })
-// }
+    })
+}
 
 
 
@@ -262,12 +262,12 @@ scene.add(floor)
  * Lights
  */
 // Ambient light
-const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.12)
+const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.028)
 gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
 scene.add(ambientLight)
 
 // Directional light
-const moonLight = new THREE.DirectionalLight('#b9d5ff', 0.12)
+const moonLight = new THREE.DirectionalLight('#b9d5ff', 0.028)
 moonLight.position.set(4, 5, - 2)
 gui.add(moonLight, 'intensity').min(0).max(1).step(0.001)
 gui.add(moonLight.position, 'x').min(- 5).max(5).step(0.001)
@@ -291,11 +291,6 @@ scene.add(ghost1)
 
 const ghost2 = new THREE.PointLight('#00ffff' , 2 , 3)
 scene.add(ghost2)
-
-const ghost3 = new THREE.PointLight('#ffff00' , 2 , 3)
-scene.add(ghost3)
-
-
 
 /**
  * Sizes
@@ -354,7 +349,6 @@ moonLight.castShadow = true
 doorLight.castShadow = true
 ghost1.castShadow = true
 ghost2.castShadow = true
-ghost3.castShadow = true
 
 walls.castShadow = true
 bush1.castShadow = true
@@ -368,7 +362,6 @@ doorLight.shadow.mapSize.width = 256
 doorLight.shadow.mapSize.height = 256
 doorLight.shadow.camera.far = 7
 
-
 ghost1.shadow.mapSize.width = 256
 ghost1.shadow.mapSize.height = 256
 ghost1.shadow.camera.far = 7
@@ -377,40 +370,9 @@ ghost2.shadow.mapSize.width = 256
 ghost2.shadow.mapSize.height = 256
 ghost2.shadow.camera.far = 7
 
-ghost3.shadow.mapSize.width = 256
-ghost3.shadow.mapSize.height = 256
-ghost3.shadow.camera.far = 7
 /**
- * Animate
+ * Ghost Models
  */
-
-// gltfLoader.load('models/Ghost/untitled.glb',
-// (gltf)=>{
-    
-//         const angle = 3 * 0.5
-//         gltf.scene.position.x = Math.cos(angle) * 4
-//         gltf.scene.position.z = Math.sin(angle) * 4
-//         gltf.scene.position.y = Math.sin(elapsedTimeFGhost * 3)
-    
-//         gltf.scene.scale.set(0.4,0.4,0.4)
-//         gltf.scene.rotation.x = 1.3
-//         gltf.scene.rotation.y = - 0.01
-    
-//         gltf.scene.castShadow = true
-    
-//         gltf.scene.traverse(function (node) {
-//             if(node.isMesh){
-//                 node.castShadow = true
-//             }
-//         })
-    
-//         scene.add(gltf.scene)
-
-//         renderer.render(scene, camera)
-
-//         window.requestAnimationFrame(gltf)
-
-// })
 
 gltfLoader.load('models/Ghost/untitled.glb', processGhost)
 
@@ -427,8 +389,7 @@ function processGhost(gltf) {
 
     action.play()
 
-    gltf.scene.scale.set(.5,.5,.5)
-    // gltf.scene.scale.set(1.1,1.1,1.1)
+    gltf.scene.scale.set(.4,.4,.4)
 
     gltf.scene.castShadow = true
     
@@ -438,18 +399,14 @@ function processGhost(gltf) {
         }
     })
 
-    console.log(gltf);
     model.add(gltf.scene)
-
     scene.add(model)
 }
 
 function proessGhost2(gltf) {
     
     gltf.scene.scale.set(.7,.7,.7)
-
     gltf.scene.position.y = -0.8
-
 
     gltf.scene.castShadow = true
     
@@ -460,7 +417,6 @@ function proessGhost2(gltf) {
     })
 
     model2.add(gltf.scene)
-
     scene.add(model2)
 }
 
@@ -476,20 +432,13 @@ const tick = () =>
     previousTime = elapsedTime
 
     // Ghost Animation
-    // const ghostAngle = elapsedTime * 0.5
     ghost1.position.x = model.position.x
     ghost1.position.z = model.position.z
     ghost1.position.y = Math.sin(elapsedTime * 3)
 
-    // const ghost2Angle = - elapsedTime * 0.32
     ghost2.position.x = model2.position.x
     ghost2.position.z = model2.position.z
     ghost2.position.y = Math.sin(elapsedTime * 4) + Math.sin(elapsedTime * 2.5)
-
-    const ghost3Angle = elapsedTime * 0.18
-    ghost3.position.x = Math.cos(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.32))
-    ghost3.position.z = Math.sin(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.5))
-    ghost3.position.y = Math.sin(elapsedTime * 4)  + Math.sin(elapsedTime * 2.5)
 
     const angle = elapsedTime * 0.5
     model.position.x = Math.cos(angle) * 4
@@ -500,7 +449,6 @@ const tick = () =>
     model2.position.z = Math.sin(angle2) * 5
 
     model.rotation.y -=0.01
-    // model.position.y = Math.abs(Math.sin(elapsedTime * 0.2 - 2))
     if(mixer !=null){
         mixer.update(deltaTime)
     }
@@ -515,41 +463,3 @@ const tick = () =>
 }
 
 tick()
-
-// gltfLoader.load('models/Ghost/untitled.glb', process)
-
-// let model = new THREE.Object3D()
-
-
-// animateGhost()
-
-// function animateGhost() {
-
-//     requestAnimationFrame(animateGhost)
-
-//     // const angle = elapsedTimeFGhost * 0.5
-//     // model.position.x = Math.cos(angle) * 4
-//     // model.position.z = Math.sin(angle) * 4
-//     // model.position.y = Math.sin(elapsedTimeFGhost * 3)
-    
-//     model.scale.set(0.4,0.4,0.4)
-//     model.rotation.x = 1.3
-//     model.rotation.y = - 0.01
-    
-//     renderer.render(scene , camera)
-// }
-
-// function process(gltf) {
-
-//     gltf.scene.castShadow = true
-    
-//     gltf.scene.traverse(function (node) {
-//         if(node.isMesh){
-//             node.castShadow = true
-//         }
-//     })
-
-//     model.add(gltf.scene)
-
-//     scene.add(model)
-// }
