@@ -4,8 +4,28 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import GUI from 'lil-gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
+var RESOURCES_LOADED = false
+var loadingManager = null
 
-const gltfLoader = new GLTFLoader()
+// const progressBar = document.getElementById('progress-bar')
+
+// const progressBarContainer = document.querySelectorAll('.progress-bar-container')
+
+
+loadingManager = new THREE.LoadingManager()
+
+loadingManager.onProgress = function (item , loaded , total) {
+    console.log( item , loaded , total)
+    // progressBar.value = (loaded / total) * 100
+}
+
+loadingManager.onLoad = function(){
+    console.log('done')
+    RESOURCES_LOADED = true
+    // progressBarContainer.style.display = 'none'
+}
+
+const gltfLoader = new GLTFLoader(loadingManager)
 
 /**
  * Base
@@ -35,7 +55,7 @@ scene.fog = fog
 /**
  * Textures
  */
-const textureLoader = new THREE.TextureLoader()
+const textureLoader = new THREE.TextureLoader(loadingManager)
 
 const doorColorTexture = textureLoader.load('textures/door/color.jpg')
 const alphaColorTexture = textureLoader.load('textures/door/alpha.jpg')
@@ -339,8 +359,6 @@ var loadingScreen = {
         })
     )
 }
-
-var RESOURCES_LOADED = false
 
 loadingScreen.box.position.set(0 , 0 , 5)
 loadingScreen.camera.lookAt(loadingScreen.box.position)
