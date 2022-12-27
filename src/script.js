@@ -19,6 +19,15 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+/**
+ * Sizes
+ */
+const sizes = {
+    width: window.innerWidth,
+    height: window.innerHeight
+}
+
+
 //Fog
 const fog = new THREE.Fog('#262837' , 1 , 15)
 scene.fog = fog
@@ -292,14 +301,6 @@ scene.add(ghost1)
 const ghost2 = new THREE.PointLight('#00ffff' , 2 , 3)
 scene.add(ghost2)
 
-/**
- * Sizes
- */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-}
-
 window.addEventListener('resize', () =>
 {
     // Update sizes
@@ -325,6 +326,26 @@ camera.position.x = 4
 camera.position.y = 2
 camera.position.z = 5
 scene.add(camera)
+
+
+// Loading Screen
+var loadingScreen = {
+    scene: new THREE.Scene(),
+    camera: new THREE.PerspectiveCamera(90, sizes.width / sizes.height, 0.1, 100),
+    box: new THREE.Mesh(
+        new THREE.BoxGeometry(1 , 1 , 1),
+        new THREE.MeshBasicMaterial({
+            color: 0x4444ff
+        })
+    )
+}
+
+var RESOURCES_LOADED = false
+
+loadingScreen.box.position.set(0 , 0 , 5)
+loadingScreen.camera.lookAt(loadingScreen.box.position)
+loadingScreen.scene.add(loadingScreen.box)
+
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
@@ -427,6 +448,21 @@ let previousTime = 0
 
 const tick = () =>
 {
+    if(RESOURCES_LOADED == false){
+        requestAnimationFrame(tick)
+
+        // Animation
+        loadingScreen.box.position.x -= 0.05
+        if(loadingScreen.box.position.x < - 10){
+            loadingScreen.box.position.x = 10
+        }
+        loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x)
+
+        renderer.render(loadingScreen.scene , loadingScreen.camera)
+        return;
+    }
+
+
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime  - previousTime
     previousTime = elapsedTime
