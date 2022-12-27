@@ -412,12 +412,15 @@ ghost3.shadow.camera.far = 7
 
 // })
 
-gltfLoader.load('models/Ghost/untitled.glb', process)
+gltfLoader.load('models/Ghost/untitled.glb', processGhost)
+
+gltfLoader.load('models/Ghost2/untitled.glb' ,proessGhost2 )
 
 let model = new THREE.Object3D()
+let model2 = new THREE.Object3D()
 let mixer = null
 
-function process(gltf) {
+function processGhost(gltf) {
 
     mixer = new THREE.AnimationMixer(gltf.scene)
     const action = mixer.clipAction(gltf.animations[0])
@@ -441,6 +444,26 @@ function process(gltf) {
     scene.add(model)
 }
 
+function proessGhost2(gltf) {
+    
+    gltf.scene.scale.set(.7,.7,.7)
+
+    gltf.scene.position.y = -0.8
+
+
+    gltf.scene.castShadow = true
+    
+    gltf.scene.traverse(function (node) {
+        if(node.isMesh){
+            node.castShadow = true
+        }
+    })
+
+    model2.add(gltf.scene)
+
+    scene.add(model2)
+}
+
 
 const clock = new THREE.Clock()
 
@@ -453,14 +476,14 @@ const tick = () =>
     previousTime = elapsedTime
 
     // Ghost Animation
-    const ghostAngle = elapsedTime * 0.5
+    // const ghostAngle = elapsedTime * 0.5
     ghost1.position.x = model.position.x
     ghost1.position.z = model.position.z
     ghost1.position.y = Math.sin(elapsedTime * 3)
 
-    const ghost2Angle = - elapsedTime * 0.32
-    ghost2.position.x = Math.cos(ghost2Angle) * 5
-    ghost2.position.z = Math.sin(ghost2Angle) * 5
+    // const ghost2Angle = - elapsedTime * 0.32
+    ghost2.position.x = model2.position.x
+    ghost2.position.z = model2.position.z
     ghost2.position.y = Math.sin(elapsedTime * 4) + Math.sin(elapsedTime * 2.5)
 
     const ghost3Angle = elapsedTime * 0.18
@@ -472,6 +495,9 @@ const tick = () =>
     model.position.x = Math.cos(angle) * 4
     model.position.z = Math.sin(angle) * 4
 
+    const angle2 = elapsedTime * 0.32
+    model2.position.x = Math.cos(angle2) * 5
+    model2.position.z = Math.sin(angle2) * 5
 
     model.rotation.y -=0.01
     // model.position.y = Math.abs(Math.sin(elapsedTime * 0.2 - 2))
