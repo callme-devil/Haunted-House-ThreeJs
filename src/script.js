@@ -190,56 +190,56 @@ house.add(bush1 , bush2 , bush3 , bush4)
 const graves = new THREE.Group()
 scene.add(graves)
 
-for(let i = 0 ; i < 30; i++){
-    gltfLoader.load('models/Graves/grave2.glb',
-    (gltf)=>{
-        const angle = Math.random() * Math.PI * 7
-        const radius = 4 + Math.random() * 5.3
-        gltf.scene.position.x = 5
-        gltf.scene.scale.set(0.02,0.02,0.02)
+// for(let i = 0 ; i < 30; i++){
+//     gltfLoader.load('models/Graves/grave2.glb',
+//     (gltf)=>{
+//         const angle = Math.random() * Math.PI * 7
+//         const radius = 4 + Math.random() * 5.3
+//         gltf.scene.position.x = 5
+//         gltf.scene.scale.set(0.02,0.02,0.02)
 
-        const x = Math.sin(angle) * radius
-        const z = Math.cos(angle) * radius + 0.02
+//         const x = Math.sin(angle) * radius
+//         const z = Math.cos(angle) * radius + 0.02
 
-        gltf.scene.position.set(x , 0 , z)
-        gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
+//         gltf.scene.position.set(x , 0 , z)
+//         gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
 
-        gltf.scene.castShadow = true
+//         gltf.scene.castShadow = true
        
-        gltf.scene.traverse(function (node) {
-            if(node.isMesh){
-                node.castShadow = true
-            }
-        })
+//         gltf.scene.traverse(function (node) {
+//             if(node.isMesh){
+//                 node.castShadow = true
+//             }
+//         })
 
-        graves.add(gltf.scene)
+//         graves.add(gltf.scene)
 
-    })
-}
+//     })
+// }
 //? Grave 2
-for(let i = 0 ; i < 20; i++){
-    gltfLoader.load('models/Graves/grave.glb',
-    (gltf)=>{
-        const angle = Math.random() * Math.PI * 7
-        const radius = 4 + Math.random() * 3.6
-        gltf.scene.position.x = 5
-        gltf.scene.scale.set(0.02,0.02,0.02)
-        const x = Math.sin(angle) * radius
-        const z = Math.cos(angle) * radius + 0.02
+// for(let i = 0 ; i < 20; i++){
+//     gltfLoader.load('models/Graves/grave.glb',
+//     (gltf)=>{
+//         const angle = Math.random() * Math.PI * 7
+//         const radius = 4 + Math.random() * 3.6
+//         gltf.scene.position.x = 5
+//         gltf.scene.scale.set(0.02,0.02,0.02)
+//         const x = Math.sin(angle) * radius
+//         const z = Math.cos(angle) * radius + 0.02
 
-        gltf.scene.position.set(x , 0 , z)
-        gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
+//         gltf.scene.position.set(x , 0 , z)
+//         gltf.scene.rotation.y = (Math.random() - 0.5) * 0.4
 
-        gltf.scene.traverse(function (node) {
-            if(node.isMesh){
-                node.castShadow = true
-            }
-        })
+//         gltf.scene.traverse(function (node) {
+//             if(node.isMesh){
+//                 node.castShadow = true
+//             }
+//         })
 
-        graves.add(gltf.scene)
+//         graves.add(gltf.scene)
 
-    })
-}
+//     })
+// }
 
 
 
@@ -415,13 +415,17 @@ ghost3.shadow.camera.far = 7
 gltfLoader.load('models/Ghost/untitled.glb', process)
 
 let model = new THREE.Object3D()
+let mixer = null
 
 function process(gltf) {
 
-    gltf.scene.scale.set(0.4,0.4,0.4)
+    mixer = new THREE.AnimationMixer(gltf.scene)
+    const action = mixer.clipAction(gltf.animations[0])
 
-    gltf.scene.rotation.x = 1.3
-    gltf.scene.rotation.y = - 0.01
+    action.play()
+
+    gltf.scene.scale.set(.5,.5,.5)
+    // gltf.scene.scale.set(1.1,1.1,1.1)
 
     gltf.scene.castShadow = true
     
@@ -431,6 +435,7 @@ function process(gltf) {
         }
     })
 
+    console.log(gltf);
     model.add(gltf.scene)
 
     scene.add(model)
@@ -439,16 +444,18 @@ function process(gltf) {
 
 const clock = new THREE.Clock()
 
-const elapsedTimeFGhost = clock.getElapsedTime()
+let previousTime = 0
 
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+    const deltaTime = elapsedTime  - previousTime
+    previousTime = elapsedTime
 
     // Ghost Animation
     const ghostAngle = elapsedTime * 0.5
-    ghost1.position.x = Math.cos(ghostAngle) * 4
-    ghost1.position.z = Math.sin(ghostAngle) * 4
+    ghost1.position.x = model.position.x
+    ghost1.position.z = model.position.z
     ghost1.position.y = Math.sin(elapsedTime * 3)
 
     const ghost2Angle = - elapsedTime * 0.32
@@ -464,9 +471,13 @@ const tick = () =>
     const angle = elapsedTime * 0.5
     model.position.x = Math.cos(angle) * 4
     model.position.z = Math.sin(angle) * 4
-    model.position.y = Math.sin(elapsedTime * 3)
-    
 
+
+    model.rotation.y -=0.01
+    // model.position.y = Math.abs(Math.sin(elapsedTime * 0.2 - 2))
+    if(mixer !=null){
+        mixer.update(deltaTime)
+    }
     // Update controls
     controls.update()
 
